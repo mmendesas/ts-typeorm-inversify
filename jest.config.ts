@@ -6,6 +6,7 @@ const config: Config = {
   coverageDirectory: '.jest-coverage',
   coverageReporters: ['html', 'lcov', 'text-summary'],
   collectCoverage: true,
+  coveragePathIgnorePatterns: ['src/utils/Database.ts'],
   displayName: 'unit-tests',
   clearMocks: true,
   moduleDirectories: ['node_modules'],

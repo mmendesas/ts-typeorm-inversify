@@ -1,11 +1,4 @@
-export interface IUser {
-  id?: number;
-  username: string;
-}
-
-export interface IDatabaseState {
-  users: IUser[];
-}
+import { IDatabaseState, IUser } from './types';
 
 class Database {
   private state: IDatabaseState = {
