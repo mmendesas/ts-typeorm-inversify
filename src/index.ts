@@ -3,17 +3,10 @@ import 'dotenv/config';
 
 import { App } from './app';
 
-import Database, { IUser } from './utils/Database';
+import { IUser } from './utils/Database';
+import { UserRepository } from './repositories/User.repository';
 
 console.clear();
-
-export class UserRepository {
-  private readonly _db = Database;
-
-  async createUser(user: IUser) {
-    return this._db.create(user);
-  }
-}
 
 export class UserService {
   constructor(private readonly _repo: UserRepository) {}

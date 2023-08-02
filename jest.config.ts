@@ -17,6 +17,9 @@ const config: Config = {
       { tsconfig: path.resolve(__dirname, 'tsconfig.json') },
     ],
   },
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
 };
 
 export default config;
