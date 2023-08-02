@@ -1,5 +1,5 @@
 import cors from 'cors';
-import express, { Application } from 'express';
+import express, { Application, NextFunction } from 'express';
 import httpStatus from 'http-status';
 import { Container } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
@@ -42,10 +42,15 @@ export class HttpServerConfig {
 
     expressApp.disable('x-powered-by');
 
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      expressApp.use(require('morgan')('dev'));
+    }
+
     expressApp.get(
       '/healthcheck',
       (req: express.Request, res: express.Response) => {
-        res.json({ status: 'ok' });
+        res.status(200).json({ status: 'ok' });
       },
     );
   }
@@ -56,5 +61,23 @@ export class HttpServerConfig {
     });
 
     // handle everything else (TODO)
+    expressApp.use(errorHandler);
   }
+}
+
+function errorHandler(
+  err: any,
+  req: express.Request,
+  res: express.Response,
+  next: NextFunction,
+) {
+  err.status = err.status || 'error';
+  err.statusCode = err.statusCode || 500;
+
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
+  });
+
+  next();
 }
