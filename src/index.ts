@@ -4,18 +4,10 @@ import 'dotenv/config';
 import { App } from './app';
 
 import { UserRepository } from './repositories/User.repository';
-import { UserRequestDTO } from './utils/types';
 import { UserService } from './services/User.service';
+import { UserController } from './controllers/User.controller';
 
 console.clear();
-
-export class UserController {
-  constructor(private readonly _service: UserService) {}
-
-  async createUser(user: UserRequestDTO) {
-    return this._service.createUser(user);
-  }
-}
 
 (async () => {
   try {
