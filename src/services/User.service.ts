@@ -1,14 +1,22 @@
-import { IUserRepository } from '@/repositories/User.repository';
+import { injectable } from 'inversify';
+
+import { UserRepository } from '@/repositories/User.repository';
 import { UserRequestDTO } from '@/utils/types';
 
 export interface IUserService {
   createUser(user: UserRequestDTO): void;
+  getAll(): void;
 }
 
-export class UserService implements IUserService {
-  public constructor(public _repo: IUserRepository) {}
+@injectable()
+export class UserService {
+  public constructor(public _repo: UserRepository) {}
 
   async createUser(user: UserRequestDTO) {
     return this._repo.createUser(user);
+  }
+
+  async getAll() {
+    return this._repo.getAll();
   }
 }

@@ -1,17 +1,15 @@
+import { UserRepository } from '@/repositories/User.repository';
 import { UserController } from './User.controller';
-import { IUserService } from '@/services/User.service';
-
-class MockedUserService implements IUserService {
-  public readonly repo: unknown;
-  async createUser(data: unknown) {
-    return data;
-  }
-}
+import { UserService } from '@/services/User.service';
 
 describe('[controller] - User', () => {
   const controller: UserController = new UserController(
-    new MockedUserService(),
+    new UserService(new UserRepository()),
   );
+
+  afterEach(() => {
+    controller._service._repo._db.clear();
+  });
 
   it('should have access to service', () => {
     expect(controller._service).toBeDefined();
@@ -31,7 +29,7 @@ describe('[controller] - User', () => {
     const user001 = await controller.createUser({ username: 'user001' });
     const user002 = await controller.createUser({ username: 'user002' });
 
-    expect(user001).toEqual({ username: 'user001' });
-    expect(user002).toEqual({ username: 'user002' });
+    expect(user001).toEqual({ id: 1, username: 'user001' });
+    expect(user002).toEqual({ id: 2, username: 'user002' });
   });
 });

@@ -1,25 +1,33 @@
 // import 'tsconfig-paths/register';
 import 'dotenv/config';
+import 'reflect-metadata';
 
 import { App } from './app';
 
 import { UserRepository } from './repositories/User.repository';
 import { UserService } from './services/User.service';
-import { UserController } from './controllers/User.controller';
+import { Container } from 'inversify';
+import { InversifyExpressServer } from 'inversify-express-utils';
 
 console.clear();
 
+import '@/controllers/User.controller';
+
 (async () => {
   try {
-    // testing out service-repository structure
-    const repo = new UserRepository();
-    const service = new UserService(repo);
-    const controller = new UserController(service);
+    const container = new Container();
 
-    controller.createUser({ username: 'Marcio' }).then(console.log);
-    controller.createUser({ username: 'Mendes' }).then(console.log);
+    container.bind(UserRepository).toSelf();
+    container.bind(UserService).toSelf();
 
-    new App().setup();
+    const server = new InversifyExpressServer(container);
+
+    const app = server.build();
+    app.listen(5000, () => {
+      console.log('Server running with inversify express');
+    });
+
+    // new App().setup();
   } catch (err) {
     console.error('[server] Something went wrong', err);
   }
