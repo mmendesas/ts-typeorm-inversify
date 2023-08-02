@@ -1,15 +1,15 @@
-import { createServer } from '@/config/express';
-import http from 'http';
-
-const port = process.env.PORT || 3001;
+import { HttpServerConfig } from '@/lib/http-server-config';
+import { SetupIOC } from './lib/setup-ioc';
 
 export class App {
   async setup() {
-    const expressApp = createServer();
-    const server = http.createServer(expressApp);
+    // setup container
+    const ioc = new SetupIOC();
+    const container = ioc.init();
 
-    server.listen(port, () => {
-      console.log(`[server] Listenning on http://localhost:${port}`);
-    });
+    // create server
+    const httpServer = new HttpServerConfig(container);
+    httpServer.configure();
+    httpServer.start();
   }
 }
