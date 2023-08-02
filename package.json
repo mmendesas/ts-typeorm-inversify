@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npx tsc",
-    "dev": "NODE_ENV=development yarn nodemon",
+    "dev": "yarn nodemon",
     "lint": "eslint ./src --ignore-path .eslintignore --ext .ts",
     "prepare": "husky install",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
@@ -20,6 +20,7 @@
     "http-status": "^1.6.2",
     "inversify": "^6.0.1",
     "inversify-express-utils": "^6.4.3",
+    "mongoose": "^7.4.1",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {

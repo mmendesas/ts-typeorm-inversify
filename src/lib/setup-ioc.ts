@@ -1,12 +1,17 @@
+import { Container } from 'inversify';
+
 import { UserRepository } from '@/repositories/User.repository';
 import { UserService } from '@/services/User.service';
-import { Container } from 'inversify';
+
+import { DBService } from './db-service';
+
+import '@/controllers/User.controller';
 
 export class SetupIOC {
   private _container: Container;
 
   constructor() {
-    this._container = new Container();
+    this._container = new Container({ defaultScope: 'Singleton' });
   }
 
   public init() {
@@ -18,5 +23,6 @@ export class SetupIOC {
     // setuup bindings
     this._container.bind(UserRepository).toSelf();
     this._container.bind(UserService).toSelf();
+    this._container.bind(DBService).toSelf();
   }
 }
