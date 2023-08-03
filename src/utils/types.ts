@@ -1,10 +1,9 @@
 export interface IUser {
-  id?: number;
-  username: string;
-}
-
-export interface UserRequestDTO {
-  username: string;
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
 }
 
 export interface IDatabaseState {

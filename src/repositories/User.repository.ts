@@ -1,21 +1,17 @@
-import Database from '@/utils/Database';
-import { IUser, UserRequestDTO } from '@/utils/types';
 import { injectable } from 'inversify';
 
-export interface IUserRepository {
-  _db: unknown;
-  createUser(user: UserRequestDTO): Promise<IUser>;
-}
+import Database from '@/utils/Database.fake';
+import { IUser } from '@/utils/types';
 
 @injectable()
-export class UserRepository implements IUserRepository {
+export class UserRepository {
   public readonly _db = Database;
-
-  async createUser(user: UserRequestDTO) {
-    return this._db.create(user);
-  }
 
   async getAll() {
     return this._db.all();
+  }
+
+  async createUser(user: IUser) {
+    return this._db.create(user);
   }
 }

@@ -11,7 +11,7 @@ class Database {
     }
 
     const createdUser = {
-      id: this.state.users.length + 1,
+      id: Math.random().toString(32),
       ...user,
     };
 
@@ -20,8 +20,8 @@ class Database {
     return createdUser;
   }
 
-  async findById(id: number): Promise<IUser | undefined> {
-    return this.state.users.find((i) => i.id === id);
+  async findById(id: string): Promise<IUser | undefined> {
+    return this.state.users.find((item) => item.id === id);
   }
 
   async all(): Promise<IUser[]> {

@@ -1,0 +1,16 @@
+### CRUD users
+GET http://localhost:5000/api/users HTTP/1.1
+content-type: application/json
+
+### register
+POST http://localhost:5000/api/users HTTP/1.1
+content-type: application/json
+
+{
+  "name": "user001",
+  "email": "user001@somewhere.com",
+  "password": "asdf1234"
+}
+
+### delete 
+DELETE http://localhost:5000/api/users/64caef5c6b22a5d7ede3b80d HTTP/1.1
