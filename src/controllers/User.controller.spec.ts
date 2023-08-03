@@ -1,6 +1,7 @@
 import { UserRepository } from '@/repositories/User.repository';
 import { UserController } from './User.controller';
 import { UserService } from '@/services/User.service';
+import DatabaseFake from '@/utils/Database.fake';
 
 describe('[controller] - User', () => {
   const controller: UserController = new UserController(
@@ -8,7 +9,7 @@ describe('[controller] - User', () => {
   );
 
   afterEach(() => {
-    controller._service._repo._db.clear();
+    DatabaseFake.clear();
   });
 
   it('should have access to service', () => {

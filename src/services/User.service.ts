@@ -5,7 +5,7 @@ import { IUser } from '@/utils/types';
 
 @injectable()
 export class UserService {
-  public constructor(private _repo: UserRepository) {}
+  public constructor(public _repo: UserRepository) {}
 
   async getAll() {
     return this._repo.getAll();

@@ -2,6 +2,11 @@ import { UserRepository } from './User.repository';
 
 describe('[repository] User', () => {
   const repo: UserRepository = new UserRepository();
+  const userData = {
+    name: 'Someone',
+    email: 'some@mail.com',
+    password: '12344321',
+  };
 
   afterEach(() => {
     repo._db.clear();
@@ -17,13 +22,13 @@ describe('[repository] User', () => {
 
   it('should call method on database when called from repo', async () => {
     const spyCreate = jest.spyOn(repo._db, 'create');
-    await repo.createUser({ username: 'Someone' });
+    await repo.createUser(userData);
     expect(spyCreate).toHaveBeenCalledTimes(1);
   });
 
   it('should return created user', async () => {
-    const expected = { id: 1, username: 'Someone Somewhere' };
-    const result = await repo.createUser({ username: 'Someone Somewhere' });
-    expect(result).toEqual(expected);
+    const result = await repo.createUser(userData);
+    expect(result.name).toEqual(userData.name);
+    expect(result.email).toEqual(userData.email);
   });
 });

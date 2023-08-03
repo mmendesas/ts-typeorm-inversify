@@ -1,11 +1,15 @@
 import { injectable } from 'inversify';
 
-import Database from '@/utils/Database.fake';
+import FakeDB from '@/utils/Database.fake';
 import { IUser } from '@/utils/types';
 
 @injectable()
 export class UserRepository {
-  public readonly _db = Database;
+  public _db: any;
+
+  constructor(db?: any) {
+    this._db = db || FakeDB;
+  }
 
   async getAll() {
     return this._db.find();

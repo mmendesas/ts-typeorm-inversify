@@ -10,7 +10,7 @@ import { UserService } from '@/services/User.service';
 
 @controller('/users')
 export class UserController {
-  public constructor(private _userService: UserService) {}
+  public constructor(public _userService: UserService) {}
 
   @httpGet('/')
   async index() {
