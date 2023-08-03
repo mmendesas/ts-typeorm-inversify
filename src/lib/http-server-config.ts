@@ -15,7 +15,11 @@ export class HttpServerConfig {
   }
 
   public configure(): void {
-    const server = new InversifyExpressServer(this._container)
+    const server = new InversifyExpressServer(
+      this._container, //
+      null,
+      { rootPath: '/api' },
+    )
       .setConfig((app) => {
         this._configureMiddlewares(app);
       })
@@ -73,6 +77,13 @@ function errorHandler(
 ) {
   err.status = err.status || 'error';
   err.statusCode = err.statusCode || 500;
+
+  if (err.code === 11000) {
+    return res.status(401).json({
+      status: 'fail',
+      message: 'Email already exist',
+    });
+  }
 
   res.status(err.statusCode).json({
     status: err.status,
