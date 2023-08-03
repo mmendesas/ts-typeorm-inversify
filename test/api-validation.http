@@ -1,6 +1,9 @@
 ### CRUD users
 GET http://localhost:5000/api/users HTTP/1.1
-content-type: application/json
+
+### get user info
+GET http://localhost:5000/api/users/0.2fvq8efnuu HTTP/1.1
+
 
 ### register
 POST http://localhost:5000/api/users HTTP/1.1

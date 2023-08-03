@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import mongoose from 'mongoose';
 
-import { UserSchema } from '@/models/user.model';
+import { UserModel } from '@/models/user.model';
 
 @injectable()
 export class DBService {
@@ -18,6 +18,6 @@ export class DBService {
   }
 
   get user() {
-    return this._db?.model('User', UserSchema);
+    return UserModel;
   }
 }
