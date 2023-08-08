@@ -1,39 +1,62 @@
+import { mock } from 'jest-mock-extended';
+
 import { UserRepository } from '@/repositories/User.repository';
 import { UserService } from './User.service';
+import { createTestingModule } from '@test/create-testing-module';
+import { UserModule } from '@/modules';
+import { TYPES } from '@/utils/types';
+import { UserRepositoryMock } from '@test/mocks';
 import DatabaseFake from '@/utils/Database.fake';
 
 describe('[service] - User', () => {
-  const service: UserService = new UserService(new UserRepository());
-  const userData = {
-    name: 'Someone',
-    email: 'some@mail.com',
-    password: '12344321',
-  };
+  let _service: UserService;
+  const mockedUserRepository = mock<UserRepository>(new UserRepositoryMock());
 
-  afterEach(() => {
-    DatabaseFake.clear();
+  beforeAll(() => {
+    DatabaseFake.init();
   });
 
-  it('should have access to repository', () => {
-    expect(service._repo).toBeDefined();
+  beforeEach(() => {
+    // simulate inversify
+    const _container = createTestingModule(UserModule);
+
+    // mock repos
+    _container
+      .rebind<UserRepository>(TYPES.UserRepository)
+      .toConstantValue(mockedUserRepository);
+
+    _service = _container.get(TYPES.UserService);
   });
 
-  it('should have method called createUser', () => {
-    expect(service.newUser).toBeDefined();
+  it('should be defined', () => {
+    expect(_service).toBeDefined();
   });
 
-  it('should call createUser from repo', async () => {
-    const spy = jest.spyOn(service._repo, 'createUser');
-    await service.newUser(userData);
-
-    expect(spy).toHaveBeenCalled();
+  it('GET /users', async () => {
+    const users = await _service.getUsers();
+    expect(users.length).toBe(2);
   });
 
-  it('should return created user', async () => {
-    const user01 = await service.newUser(userData);
-    const user02 = await service.newUser(userData);
+  it('GET /users/:id', async () => {
+    const res = await _service.getUser('1');
+    expect(res.name).toEqual('Ted');
+  });
 
-    expect(user01).toEqual({ id: 1, username: 'user 001' });
-    expect(user02).toEqual({ id: 2, username: 'user 002' });
+  it('PUT /users/:id', async () => {
+    const before = await _service.getUser('1');
+    expect(before.name).toEqual('Ted');
+
+    // action
+    const after = await _service.updateUser('1', { name: 'another name' });
+    expect(after.name).toEqual('another name');
+  });
+
+  it('DELETE /users/:id', async () => {
+    const before = await _service.getUsers();
+    expect(before.length).toEqual(2);
+
+    await _service.delete('1');
+    const after = await _service.getUsers();
+    expect(after.length).toEqual(1);
   });
 });

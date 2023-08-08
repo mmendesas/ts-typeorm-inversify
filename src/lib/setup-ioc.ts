@@ -1,13 +1,8 @@
 import { Container } from 'inversify';
 
-import { UserRepository } from '@/repositories/User.repository';
-import { UserService } from '@/services/User.service';
-
-import { DBService } from './db-service';
-
 import '@/controllers/User.controller';
-import { UserController } from '@/controllers/User.controller';
-import { TYPES } from '@/utils/types';
+import { DBService } from './db-service';
+import * as AllModules from '@/modules';
 
 export class SetupIOC {
   private _container: Container;
@@ -22,15 +17,11 @@ export class SetupIOC {
   }
 
   _setupDependencies() {
-    // setup bindings
-    this._container.bind(UserController).toSelf();
+    // setup bindings for modules
+    const modules = Object.values(AllModules);
+    this._container.load(...modules.map((m) => new m()));
 
-    this._container.bind<UserService>(TYPES.UserService).to(UserService);
-
-    this._container
-      .bind<UserRepository>(TYPES.UserRepository)
-      .to(UserRepository);
-
+    // enable DBService
     this._container.bind(DBService).toSelf();
   }
 }
