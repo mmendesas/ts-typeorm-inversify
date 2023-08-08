@@ -3,6 +3,11 @@ import { IUser } from '@/utils/types';
 import DatabaseFake from '@/utils/Database.fake';
 
 export class UserRepositoryMock {
+  constructor() {
+    // seed DB
+    DatabaseFake.init();
+  }
+
   async getUsers(): Promise<IUser[]> {
     return DatabaseFake.find();
   }

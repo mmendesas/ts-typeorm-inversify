@@ -4,7 +4,7 @@ import { UserRepository } from '@/repositories/User.repository';
 import { UserController } from './User.controller';
 import { UserModule } from '@/modules/User.module';
 
-import { createTestingModule } from '@test/create-testing-module';
+import { createTestingModule } from '@test/lib/create-testing-module';
 import { UserRepositoryMock } from '@test/mocks';
 import { TYPES } from '@/utils/types';
 import { Request } from 'express-serve-static-core';
@@ -31,7 +31,12 @@ describe('[controller] - User', () => {
     expect(_controller).toBeDefined();
   });
 
-  it('should register an user', async () => {
+  it('GET /users', async () => {
+    const users = await _controller.getUsers();
+    expect(users.length).toEqual(2);
+  });
+
+  it('POST /users', async () => {
     await _controller.newUser({
       body: {
         name: 'emicida',

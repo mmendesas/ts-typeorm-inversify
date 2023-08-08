@@ -2,19 +2,14 @@ import { mock } from 'jest-mock-extended';
 
 import { UserRepository } from '@/repositories/User.repository';
 import { UserService } from './User.service';
-import { createTestingModule } from '@test/create-testing-module';
+import { createTestingModule } from '@test/lib/create-testing-module';
 import { UserModule } from '@/modules';
 import { TYPES } from '@/utils/types';
 import { UserRepositoryMock } from '@test/mocks';
-import DatabaseFake from '@/utils/Database.fake';
 
 describe('[service] - User', () => {
   let _service: UserService;
   const mockedUserRepository = mock<UserRepository>(new UserRepositoryMock());
-
-  beforeAll(() => {
-    DatabaseFake.init();
-  });
 
   beforeEach(() => {
     // simulate inversify
