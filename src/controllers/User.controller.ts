@@ -6,31 +6,34 @@ import {
   httpPost,
   httpPut,
   httpDelete,
+  interfaces,
 } from 'inversify-express-utils';
 
 import { Request, Response } from 'express';
 
 import { UserService } from '@/services/User.service';
+import { inject } from 'inversify';
+import { IUser, TYPES } from '@/utils/types';
 
 @controller('/users')
-export class UserController {
-  public constructor(public _userService: UserService) {}
+export class UserController implements interfaces.Controller {
+  constructor(@inject(TYPES.UserService) private _userService: UserService) {}
 
   @httpGet('/')
-  async index() {
-    return this._userService.getAll();
+  async getUsers(): Promise<IUser[]> {
+    return this._userService.getUsers();
   }
 
   @httpGet('/:id')
-  async findById(@request() req: Request) {
-    return this._userService.findById(req.params.id);
+  async getUser(@request() req: Request): Promise<IUser> {
+    return this._userService.getUser(req.params.id);
   }
 
   @httpPost('/')
-  async createUser(@request() req: Request) {
+  async newUser(@request() req: Request) {
     const { name, email, password } = req.body;
 
-    return this._userService.createUser({
+    return this._userService.newUser({
       name,
       email,
       password,
@@ -38,10 +41,8 @@ export class UserController {
   }
 
   @httpPut('/:id')
-  async updateOne(@request() req: Request) {
-    const { name } = req.body;
-
-    return this._userService.updateOne(req.params.id, { name });
+  async updateUser(@request() req: Request): Promise<IUser> {
+    return this._userService.updateUser(req.params.id, req.body);
   }
 
   @httpDelete('/:id')

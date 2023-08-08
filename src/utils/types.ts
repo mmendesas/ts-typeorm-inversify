@@ -8,3 +8,8 @@ export interface IUser {
 export interface IDatabaseState {
   users: IUser[];
 }
+
+export const TYPES = {
+  UserService: Symbol.for('UserService'),
+  UserRepository: Symbol.for('UserRepository'),
+};

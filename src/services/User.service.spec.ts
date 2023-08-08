@@ -19,19 +19,19 @@ describe('[service] - User', () => {
   });
 
   it('should have method called createUser', () => {
-    expect(service.createUser).toBeDefined();
+    expect(service.newUser).toBeDefined();
   });
 
   it('should call createUser from repo', async () => {
     const spy = jest.spyOn(service._repo, 'createUser');
-    await service.createUser(userData);
+    await service.newUser(userData);
 
     expect(spy).toHaveBeenCalled();
   });
 
   it('should return created user', async () => {
-    const user01 = await service.createUser(userData);
-    const user02 = await service.createUser(userData);
+    const user01 = await service.newUser(userData);
+    const user02 = await service.newUser(userData);
 
     expect(user01).toEqual({ id: 1, username: 'user 001' });
     expect(user02).toEqual({ id: 2, username: 'user 002' });

@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import mongoose from 'mongoose';
 
-import { UserModel } from '@/models/user.model';
+import { UserModel } from '@/models/User.model';
 
 @injectable()
 export class DBService {

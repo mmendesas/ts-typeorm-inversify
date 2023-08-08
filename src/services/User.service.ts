@@ -1,29 +1,39 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 import { UserRepository } from '@/repositories/User.repository';
-import { IUser } from '@/utils/types';
+import { IUser, TYPES } from '@/utils/types';
+
+export interface IUserService {
+  getUsers(): Promise<IUser[]>;
+  getUser(id: string): Promise<IUser>;
+  newUser(user: IUser): void;
+  updateUser(id: string, user: IUser): void;
+  delete(id: string): Promise<boolean>;
+}
 
 @injectable()
 export class UserService {
-  public constructor(public _repo: UserRepository) {}
+  public constructor(
+    @inject(TYPES.UserRepository) private _repo: UserRepository,
+  ) {}
 
-  async getAll() {
-    return this._repo.getAll();
+  async getUsers(): Promise<IUser[]> {
+    return this._repo.getUsers();
   }
 
-  async findById(id: string) {
-    return this._repo.findById(id);
+  async getUser(id: string): Promise<IUser> {
+    return this._repo.getUser(id);
   }
 
-  async createUser(user: IUser) {
-    return this._repo.createUser(user);
+  async newUser(user: IUser) {
+    return this._repo.newUser(user);
   }
 
-  async updateOne(id: string, user: Pick<IUser, 'name'>) {
-    return this._repo.updateOne(id, user);
+  async updateUser(id: string, user: Pick<IUser, 'name'>) {
+    return this._repo.updateUser(id, user);
   }
 
-  async delete(id: string) {
-    return this._repo.delete(id);
+  async delete(id: string): Promise<boolean> {
+    return this._repo.deleteUser(id);
   }
 }

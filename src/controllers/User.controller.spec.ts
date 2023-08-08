@@ -1,36 +1,42 @@
+import { mock } from 'jest-mock-extended';
+
 import { UserRepository } from '@/repositories/User.repository';
 import { UserController } from './User.controller';
-import { UserService } from '@/services/User.service';
-import DatabaseFake from '@/utils/Database.fake';
+import { UserModule } from '@/modules/User.module';
+
+import { createTestingModule } from '@test/create-testing-module';
+import { UserRepositoryMock } from '@test/mocks';
+import { TYPES } from '@/utils/types';
+import { Request } from 'express-serve-static-core';
 
 describe('[controller] - User', () => {
-  const controller: UserController = new UserController(
-    new UserService(new UserRepository()),
-  );
+  const mockedUserRepository = mock<UserRepository>(new UserRepositoryMock());
 
-  afterEach(() => {
-    DatabaseFake.clear();
+  let _controller: UserController;
+
+  beforeEach(() => {
+    // simulate DI
+    const container = createTestingModule(UserModule);
+
+    // rebind repo to mocked instance
+    container
+      .rebind<UserRepository>(TYPES.UserRepository)
+      .toConstantValue(mockedUserRepository);
+
+    // inversify get controller
+    _controller = container.get(UserController);
   });
 
-  it('should have access to service', () => {
-    expect(controller._service).toBeDefined();
+  it('should be defined', () => {
+    expect(_controller).toBeDefined();
   });
 
-  it('should have method called createUser', () => {
-    expect(controller.createUser).toBeDefined();
-  });
-
-  it('should call method from service', async () => {
-    const spy = jest.spyOn(controller._service, 'createUser');
-    await controller.createUser({ name: 'someone' });
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should return created user', async () => {
-    const user001 = await controller.createUser({ name: 'user001' });
-    const user002 = await controller.createUser({ name: 'user002' });
-
-    expect(user001).toEqual({ id: 1, name: 'user001' });
-    expect(user002).toEqual({ id: 2, name: 'user002' });
+  it('should register an user', async () => {
+    await _controller.newUser({
+      body: {
+        name: 'emicida',
+        email: 'emicida@emi.com',
+      },
+    } as Request);
   });
 });

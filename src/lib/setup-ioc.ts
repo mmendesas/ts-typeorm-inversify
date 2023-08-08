@@ -6,6 +6,8 @@ import { UserService } from '@/services/User.service';
 import { DBService } from './db-service';
 
 import '@/controllers/User.controller';
+import { UserController } from '@/controllers/User.controller';
+import { TYPES } from '@/utils/types';
 
 export class SetupIOC {
   private _container: Container;
@@ -20,9 +22,15 @@ export class SetupIOC {
   }
 
   _setupDependencies() {
-    // setuup bindings
-    this._container.bind(UserRepository).toSelf();
-    this._container.bind(UserService).toSelf();
+    // setup bindings
+    this._container.bind(UserController).toSelf();
+
+    this._container.bind<UserService>(TYPES.UserService).to(UserService);
+
+    this._container
+      .bind<UserRepository>(TYPES.UserRepository)
+      .to(UserRepository);
+
     this._container.bind(DBService).toSelf();
   }
 }

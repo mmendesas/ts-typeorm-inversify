@@ -1,5 +1,11 @@
-import { getModelForClass, prop } from '@typegoose/typegoose';
+import {
+  Severity,
+  getModelForClass,
+  modelOptions,
+  prop,
+} from '@typegoose/typegoose';
 
+@modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class User {
   @prop()
   name: string | undefined;
@@ -10,7 +16,7 @@ export class User {
   @prop({ default: 'user' })
   role: string | undefined;
 
-  @prop({ required: true, minlength: 6, maxlength: 32 })
+  @prop({ type: String, required: true, minlength: 6, maxlength: 32 })
   password: string | undefined;
 }
 

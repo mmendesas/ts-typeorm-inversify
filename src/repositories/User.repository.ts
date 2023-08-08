@@ -7,24 +7,26 @@ import { DBService } from '@/lib/db-service';
 export class UserRepository {
   constructor(public readonly _db: DBService) {}
 
-  async getAll() {
+  async getUsers(): Promise<IUser[]> {
     return this._db.user.find().select('name email role');
   }
 
-  async createUser(user: IUser) {
-    return this._db.user.create(user);
+  async newUser(user: IUser): Promise<IUser> {
+    await this._db.user.create(user);
+    return user;
   }
 
-  async findById(id: string) {
+  async getUser(id: string): Promise<IUser> {
     return this._db.user.findById(id).select('name email role');
   }
 
-  async updateOne(id: string, user: Pick<IUser, 'name'>) {
+  async updateUser(id: string, user: Pick<IUser, 'name'>): Promise<IUser> {
     await this._db.user.findByIdAndUpdate(id, user);
     return this._db.user.findById(id).select('name email role');
   }
 
-  async delete(id: string) {
-    return this._db.user.findByIdAndDelete(id);
+  async deleteUser(id: string): Promise<boolean> {
+    await this._db.user.findByIdAndDelete(id);
+    return true;
   }
 }
