@@ -1,10 +1,14 @@
 import {
   controller,
   request,
+  response,
   httpGet,
   httpPost,
+  httpPut,
+  httpDelete,
 } from 'inversify-express-utils';
-import { Request } from 'express';
+
+import { Request, Response } from 'express';
 
 import { UserService } from '@/services/User.service';
 
@@ -30,6 +34,23 @@ export class UserController {
       name,
       email,
       password,
+    });
+  }
+
+  @httpPut('/:id')
+  async updateOne(@request() req: Request) {
+    const { name } = req.body;
+
+    return this._userService.updateOne(req.params.id, { name });
+  }
+
+  @httpDelete('/:id')
+  async delete(@request() req: Request, @response() res: Response) {
+    await this._userService.delete(req.params.id);
+    return res.status(200).json({
+      data: {
+        message: 'Item deleted',
+      },
     });
   }
 }

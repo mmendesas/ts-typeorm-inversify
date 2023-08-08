@@ -18,4 +18,12 @@ export class UserService {
   async createUser(user: IUser) {
     return this._repo.createUser(user);
   }
+
+  async updateOne(id: string, user: Pick<IUser, 'name'>) {
+    return this._repo.updateOne(id, user);
+  }
+
+  async delete(id: string) {
+    return this._repo.delete(id);
+  }
 }

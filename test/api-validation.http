@@ -2,17 +2,23 @@
 GET http://localhost:5000/api/users HTTP/1.1
 
 ### get user info
-GET http://localhost:5000/api/users/0.2fvq8efnuu HTTP/1.1
-
+GET http://localhost:5000/api/users/64cbee318ccf84042f7ef672 HTTP/1.1
 
 ### register
 POST http://localhost:5000/api/users HTTP/1.1
 content-type: application/json
-
 {
   "name": "user001",
   "email": "user001@somewhere.com",
   "password": "asdf1234"
+}
+
+### update
+PUT http://localhost:5000/api/users/64cbee318ccf84042f7ef672 HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "user001"
 }
 
 ### delete 

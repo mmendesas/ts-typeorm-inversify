@@ -15,5 +15,3 @@ export class User {
 }
 
 export const UserModel = getModelForClass(User);
-
-// export const UserModel = mongoose.models['User'] || mongoose.model('User', UserSchema);
