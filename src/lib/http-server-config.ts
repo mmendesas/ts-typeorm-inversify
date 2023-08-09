@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import cors from 'cors';
 import express, { Application, NextFunction } from 'express';
 import httpStatus from 'http-status';
