@@ -30,3 +30,7 @@ export class UserRepositoryMock {
     return true;
   }
 }
+
+export const Groosa = {
+  UserGrosa: UserRepositoryMock,
+};

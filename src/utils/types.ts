@@ -9,7 +9,11 @@ export interface IDatabaseState {
   users: IUser[];
 }
 
-export const TYPES = {
+interface ITYPES {
+  [key: string]: symbol;
+}
+
+export const TYPES: ITYPES = {
   UserService: Symbol.for('UserService'),
   UserRepository: Symbol.for('UserRepository'),
 };
